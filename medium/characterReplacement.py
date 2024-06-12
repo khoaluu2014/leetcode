@@ -22,5 +22,6 @@ def main():
     ans = sol.characterReplacement(s, k)
     print(ans)
 
+
 if __name__ == "__main__":
     main()

@@ -14,12 +14,9 @@ class Solution:
                     s2_freq.pop(left_char)
                 elif s2_freq[left_char] > 1:
                     s2_freq[left_char] -= 1
-            print(f"s1_freq: {s1_freq}")
-            print(f"s2_freq: {s2_freq}")
             if s1_freq == s2_freq:
                 return True
         return False
-
 
 
 def main():
@@ -28,6 +25,7 @@ def main():
     s2 = "dcda"
     ans = sol.checkInclusion(s1, s2)
     print(ans)
+
 
 if __name__ == "__main__":
     main()

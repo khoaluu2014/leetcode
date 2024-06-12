@@ -7,12 +7,13 @@ class Solution:
             - put it in a hashmap window_freq
         - s[end] is not in t_freq:
             - continue the loop
-    4. If window_freq = t_freq: 
-        - update min_index if the new difference is smaller 
+    4. If window_freq = t_freq:
+        - update min_index if the new difference is smaller
         - move start of window to where end is
-        - empty window_freq 
+        - empty window_freq
     5. Return substring using min_index
     """
+
     def minWindow(self, s: str, t: str) -> str:
         t_freq, window_freq = {}, {}
         start = 0
@@ -21,10 +22,10 @@ class Solution:
         res, res_len = [-1, -1], float("inf")
         if not t or not s:
             return ""
-        
+
         for char in t:
             t_freq[char] = t_freq.get(char, 0) + 1
-        
+
         have, need = 0, len(t_freq)
 
         for end in range(n):
@@ -35,14 +36,13 @@ class Solution:
             while have == need:
                 if (end - start + 1) < res_len:
                     res = [start, end]
-                    res_len = (end - start + 1)
+                    res_len = end - start + 1
                 window_freq[s[start]] -= 1
                 if s[start] in t_freq and window_freq[s[start]] < t_freq[s[start]]:
                     have -= 1
                 start += 1
         start, end = res
-        return s[start:end+1] if res_len != float("inf") else ""
-        
+        return s[start : end + 1] if res_len != float("inf") else ""
 
 
 def main():
@@ -55,6 +55,7 @@ def main():
     ans1 = sol.minWindow(s1, t1)
     print(ans)
     print(ans1)
+
 
 if __name__ == "__main__":
     main()

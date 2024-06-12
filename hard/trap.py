@@ -1,5 +1,6 @@
 from typing import List
 
+
 class Solution:
     def trap(self, height: List[int]) -> int:
         ans = 0
@@ -26,9 +27,10 @@ class Solution:
 
 def main():
     sol = Solution()
-    height = [4,2,3]
+    height = [4, 2, 3]
     ans = sol.trap(height)
     print(ans)
+
 
 if __name__ == "__main__":
     main()
