@@ -1,10 +1,12 @@
 from typing import List
 
+
 class TrieNode:
     def __init__(self):
         self.children = {}
         self.end = False
         self.word = None
+
     def addWord(self, word):
         curr = self
         for c in word:
@@ -21,7 +23,7 @@ class Solution:
         res, vis = set(), set()
         for word in words:
             root.addWord(word)
-        
+
         for r in range(len(board)):
             for c in range(len(board[0])):
                 self.dfs(board, r, c, root, res, vis)
@@ -29,15 +31,14 @@ class Solution:
 
     def dfs(self, board, r, c, node, result, vis):
         char = board[r][c]
-        if char not in node.children or (r,c) in vis:
+        if char not in node.children or (r, c) in vis:
             return
         node = node.children[char]
         if node.end:
             result.add(node.word)
             node.end = False
-        vis.add((r,c))
-        for x, y in [(r-1, c), (r+1, c), (r, c-1), (r, c+1)]:
+        vis.add((r, c))
+        for x, y in [(r - 1, c), (r + 1, c), (r, c - 1), (r, c + 1)]:
             if 0 <= x < len(board) and 0 <= y < len(board[0]):
                 self.dfs(board, x, y, node, result, vis)
-        vis.remove((r,c))
-            
+        vis.remove((r, c))
