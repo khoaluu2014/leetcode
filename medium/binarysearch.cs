@@ -144,3 +144,24 @@ public class BinarySearch
         return -1;
     }
 }
+
+public class TimeMap
+{
+    private Dictionary<string, List<Tuple<string, int>>> keyStore;
+
+    public TimeMap()
+    {
+        keyStore = new Dictionary<string, List<Tuple<string, int>>>();
+    }
+
+    public void Set(string key, string value, int timestamp)
+    {
+        if (!keyStore.ContainsKey(key))
+        {
+            keyStore[key] = new List<Tuple<string, int>>();
+        }
+        keyStore[key].Add(Tuple.Create(value, timestamp));
+    }
+
+    public string Get(string key, int timestamp) { }
+}
