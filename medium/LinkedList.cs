@@ -127,4 +127,48 @@ public class Solution
 
         return ans.next;
     }
+
+    public bool HasCycle(ListNode head)
+    {
+        ListNode slow = head,
+            fast = head;
+
+        while (fast != null && fast.next != null)
+        {
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow.Equals(fast))
+                return true;
+        }
+        return false;
+    }
+
+    public int FindDuplicate(int[] nums)
+    {
+        int slow = 0,
+            fast = 0;
+
+        while (true)
+        {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+            if (slow == fast)
+            {
+                break;
+            }
+        }
+
+        int slow2 = 0;
+        while (true)
+        {
+            slow2 = nums[slow2];
+            slow = nums[slow];
+            if (slow == slow2)
+            {
+                break;
+            }
+        }
+
+        return slow;
+    }
 }
