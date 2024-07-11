@@ -172,3 +172,85 @@ public class Solution
         return slow;
     }
 }
+
+public class Node1
+{
+    public int Key { get; set; }
+    public int Val { get; set; }
+    public Node1? Prev { get; set; }
+    public Node1? Next { get; set; }
+
+    public Node1(int key, int val)
+    {
+        Key = key;
+        Val = val;
+        Prev = null;
+        Next = null;
+    }
+}
+
+public class LRUCache
+{
+    private int cap;
+    private Dictionary<int, Node1> cache;
+    private Node1? left;
+    private Node1? right;
+
+    public LRUCache(int capacity)
+    {
+        cap = capacity;
+        cache = new Dictionary<int, Node1>();
+        left = new Node1(0, 0);
+        right = new Node1(0, 0);
+        left.Next = right;
+        right.Prev = left;
+    }
+
+    private void Remove(Node1 node)
+    {
+        Node1 prev = node.Prev!;
+        Node1 next = node.Next!;
+        prev.Next = next;
+        next.Prev = prev;
+    }
+
+    private void Insert(Node1 node)
+    {
+        Node1 prev = right.Prev;
+        prev.Next = node;
+        node.Prev = prev;
+        node.Next = right;
+        right.Prev = node;
+    }
+
+    public int Get(int key)
+    {
+        if (cache.ContainsKey(key))
+        {
+            Node1 node = cache[key];
+            Remove(node);
+            Insert(node);
+            return node.Val;
+        }
+        return -1;
+    }
+
+    public void Put(int key, int value)
+    {
+        if (cache.ContainsKey(key))
+        {
+            Remove(cache[key]);
+        }
+
+        Node1 node = new Node1(key, value);
+        cache[key] = node;
+        Insert(node);
+
+        if (cache.Count > cap)
+        {
+            Node1 lru = left.Next;
+            Remove(lru);
+            cache.Remove(lru.Key);
+        }
+    }
+}
