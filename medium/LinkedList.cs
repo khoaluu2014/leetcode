@@ -171,6 +171,55 @@ public class Solution
 
         return slow;
     }
+
+    public ListNode MergeKLists(ListNode[] lists)
+    {
+        ListNode MergeList(ListNode l1, ListNode l2)
+        {
+            ListNode sorted = new ListNode();
+            ListNode current = sorted;
+
+            while (l1 != null && l2 != null)
+            {
+                if (l1.val <= l2.val)
+                {
+                    current.next = l1;
+                    l1 = l1.next;
+                }
+                else if (l2.val < l1.val)
+                {
+                    current.next = l2;
+                    l2 = l2.next;
+                }
+                current = current.next;
+            }
+            if (l1 != null)
+            {
+                current.next = l1!;
+            }
+            if (l2 != null)
+            {
+                current.next = l2!;
+            }
+            return sorted.next;
+        }
+        if (lists.Length == 0)
+        {
+            return null;
+        }
+        while (lists.Length > 1)
+        {
+            ListNode[] mergedLists = new ListNode[(lists.Length + 1) / 2];
+            for (int i = 0; i < lists.Length; i += 2)
+            {
+                ListNode? l1 = lists[i];
+                ListNode? l2 = (i + 1 < lists.Length) ? lists[i + 1] : null;
+                mergedLists[i / 2] = MergeList(l1, l2);
+            }
+            lists = mergedLists;
+        }
+        return lists[0];
+    }
 }
 
 public class Node1
