@@ -12,106 +12,7 @@ public class TreeNode
     }
 }
 
-public class Solution
-{
-    public TreeNode InvertTree(TreeNode root)
-    {
-        if (root == null)
-        {
-            return null;
-        }
-
-        TreeNode node = new TreeNode(root.val);
-
-        node.left = InvertTree(root.right);
-        node.right = InvertTree(root.left);
-
-        return node;
-    }
-
-    public int MaxDepth(TreeNode root)
-    {
-        if (root == null)
-            return 0;
-
-        return 1 + Math.Max(MaxDepth(root.left), MaxDepth(root.right));
-    }
-
-    public int DiameterOfBinaryTree(TreeNode root)
-    {
-        int DFS(TreeNode root, ref int res)
-        {
-            if (root == null)
-            {
-                return 0;
-            }
-
-            int left = DFS(root.left, ref res);
-            int right = DFS(root.right, ref res);
-            res = Math.Max(res, left + right);
-            return 1 + Math.Max(left, right);
-        }
-
-        int res = 0;
-        DFS(root, ref res);
-        return res;
-    }
-
-    public bool IsBalanced(TreeNode root)
-    {
-        int[] DFS(TreeNode root)
-        {
-            if (root == null)
-            {
-                return new int[] { 1, 0 };
-            }
-
-            int[] left = DFS(root.left);
-            int[] right = DFS(root.right);
-            bool balanced = left[0] == 1 && right[0] == 1 && Math.Abs(left[1] - right[1]) <= 1;
-            int height = 1 + Math.Max(left[1], right[1]);
-            return new int[] { balanced ? 1 : 0, height };
-        }
-
-        return DFS(root)[0] == 1;
-    }
-
-    public bool IsSameTree(TreeNode p, TreeNode q)
-    {
-        if (p == null && q == null)
-        {
-            return true;
-        }
-
-        if (p != null && q != null && p.val == q.val)
-        {
-            return IsSameTree(p.left, q.left) && IsSameTree(p.right, q.right);
-        }
-        else
-        {
-            return false;
-        }
-    }
-
-    public bool IsSubtree(TreeNode root, TreeNode subRoot)
-    {
-        if (subRoot == null)
-        {
-            return true;
-        }
-
-        if (root == null)
-        {
-            return false;
-        }
-
-        if (IsSameTree(root, subRoot))
-        {
-            return true;
-        }
-
-        return IsSubtree(root.left, subRoot) || IsSubtree(root.right, subRoot);
-    }
+public class BinaryTree {
 
     public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
     {
@@ -218,15 +119,18 @@ public class Solution
     
     public bool IsValidBST(TreeNode root) {
 
-      if(root == null) {
-        return true;
+      bool dfs(TreeNode node, double left, double right) {
+        if(node == null) {
+          return true;
+        }
+
+        if(node.val <= left || node.val >= right) {
+          return false;
+        }
+
+        return dfs(node.left, left, node.val) && dfs(node.right, node.val, right);
       }
 
-      if(root.left.val < root.val || root.right.val > root.val) {
-        return false;
-      }
-
-      return IsValidBST(root.left) || IsValidBST(root.right);
-
+      return dfs(root, double.NegativeInfinity, double.PositiveInfinity);
     }
 }
