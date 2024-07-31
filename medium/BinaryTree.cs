@@ -12,8 +12,8 @@ public class TreeNode
     }
 }
 
-public class BinaryTree {
-
+public class BinaryTree
+{
     public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
     {
         if (root == null)
@@ -116,21 +116,47 @@ public class BinaryTree {
 
         return dfs(root, root.val);
     }
-    
-    public bool IsValidBST(TreeNode root) {
 
-      bool dfs(TreeNode node, double left, double right) {
-        if(node == null) {
-          return true;
+    public bool IsValidBST(TreeNode root)
+    {
+        bool dfs(TreeNode node, double left, double right)
+        {
+            if (node == null)
+            {
+                return true;
+            }
+
+            if (node.val <= left || node.val >= right)
+            {
+                return false;
+            }
+
+            return dfs(node.left, left, node.val) && dfs(node.right, node.val, right);
         }
 
-        if(node.val <= left || node.val >= right) {
-          return false;
+        return dfs(root, double.NegativeInfinity, double.PositiveInfinity);
+    }
+
+    public int MaxPathSum(TreeNode root)
+    {
+        int res = root.val;
+
+        int dfs(TreeNode node, ref int res)
+        {
+            if (node == null)
+            {
+                return 0;
+            }
+
+            int left = Math.Max(dfs(node.left, ref res), 0);
+            int right = Math.Max(dfs(node.right, ref res), 0);
+
+            res = Math.Max(res, node.val + left + right);
+            return node.val + Math.Max(left, right);
         }
 
-        return dfs(node.left, left, node.val) && dfs(node.right, node.val, right);
-      }
+        dfs(root, ref res);
 
-      return dfs(root, double.NegativeInfinity, double.PositiveInfinity);
+        return res;
     }
 }

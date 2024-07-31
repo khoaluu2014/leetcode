@@ -215,18 +215,23 @@ public class Solution
 
         return dfs(root, root.val);
     }
-    
-    public bool IsValidBST(TreeNode root) {
 
-      if(root == null) {
-        return true;
-      }
+    public bool IsValidBST(TreeNode root)
+    {
 
-      if(root.left.val < root.val || root.right.val > root.val) {
-        return false;
-      }
+        if (root == null)
+        {
+            return true;
+        }
 
-      return IsValidBST(root.left) || IsValidBST(root.right);
+        if (root.left.val < root.val || root.right.val > root.val)
+        {
+            return false;
+        }
+
+        return IsValidBST(root.left) || IsValidBST(root.right);
 
     }
+
+
 }
