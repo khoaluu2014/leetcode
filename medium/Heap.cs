@@ -52,7 +52,17 @@ public class Twitter
         tweetMap[userId].Add(new int[] { count--, tweetId });
     }
 
-    public List<int> GetNewsFeed(int userId) { }
+    public List<int> GetNewsFeed(int userId)
+    {
+        List<int> res = new List<int>();
+        PriorityQueue<int[], int> minHeap = new PriorityQueue<int[], int>();
+
+        if (!followMap.ContainsKey(userId))
+        {
+            followMap[userId] = new HashSet<int>();
+        }
+        followMap[userId].Add(userId);
+    }
 
     public void Follow(int followerId, int followeeId)
     {
