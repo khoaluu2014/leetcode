@@ -30,6 +30,48 @@ public class KthLargest
     }
 }
 
+public class Twitter
+{
+    private int count;
+    private Dictionary<int, List<int[]>> tweetMap;
+    private Dictionary<int, HashSet<int>> followMap;
+
+    public Twitter()
+    {
+        count = 0;
+        tweetMap = new Dictionary<int, List<int[]>>();
+        followMap = new Dictionary<int, HashSet<int>>();
+    }
+
+    public void PostTweet(int userId, int tweetId)
+    {
+        if (!tweetMap.ContainsKey(userId))
+        {
+            tweetMap[userId] = new List<int[]>();
+        }
+        tweetMap[userId].Add(new int[] { count--, tweetId });
+    }
+
+    public List<int> GetNewsFeed(int userId) { }
+
+    public void Follow(int followerId, int followeeId)
+    {
+        if (!followMap.ContainsKey(followerId))
+        {
+            followMap[followerId] = new HashSet<int>();
+        }
+        followMap[followerId].Add(followeeId);
+    }
+
+    public void Unfollow(int followerId, int followeeId)
+    {
+        if (followMap.ContainsKey(followerId))
+        {
+            followMap[followerId].Remove(followeeId);
+        }
+    }
+}
+
 public class Heap
 {
     public int LastStoneWeight(int[] stones)
