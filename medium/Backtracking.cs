@@ -113,7 +113,7 @@ public class Backtracking
 
         bool dfs(int index, int i, int j)
         {
-            if (i < 0 || j < 0 || i >= m || j >= n)
+            if (i < 0 || j < 0 || i >= m || j >= n || board[i][j] != word[index])
             {
                 return false;
             }
@@ -139,7 +139,7 @@ public class Backtracking
 
         for (int i = 0; i < m; i++)
         {
-            for (int j = 0; j < m; j++)
+            for (int j = 0; j < n; j++)
             {
                 if (board[i][j] == word[0])
                 {
