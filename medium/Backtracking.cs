@@ -153,4 +153,46 @@ public class Backtracking
 
         return false;
     }
+
+    public List<List<string>> Partition(string s)
+    {
+        List<List<string>> res = new List<List<string>>();
+        List<string> substring = new List<string>();
+
+        bool isPalindrome(int l, int r)
+        {
+            while (l < r)
+            {
+                if (s[l] != s[r])
+                {
+                    return false;
+                }
+                l++;
+                r--;
+            }
+            return true;
+        }
+
+        void dfs(int i)
+        {
+            if (i >= s.Length)
+            {
+                res.Add(new List<string>(substring));
+                return;
+            }
+
+            for (int j = i; j < s.Length; j++)
+            {
+                if (isPalindrome(i, j))
+                {
+                    substring.Add(s.Substring(i, j - i + 1));
+                    dfs(j + 1);
+                    substring.RemoveAt(substring.Count - 1);
+                }
+            }
+        }
+        dfs(0);
+
+        return res;
+    }
 }
