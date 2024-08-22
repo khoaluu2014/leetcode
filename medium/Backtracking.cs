@@ -195,4 +195,42 @@ public class Backtracking
 
         return res;
     }
+
+    public List<string> LetterCombinations(string digits)
+    {
+        Dictionary<char, string> map = new Dictionary<char, string>()
+        {
+            { '2', "abc" },
+            { '3', "def" },
+            { '4', "ghi" },
+            { '5', "jkl" },
+            { '6', "mno" },
+            { '7', "pqrs" },
+            { '8', "tuv" },
+            { '9', "wxyz" },
+        };
+        List<string> res = new List<string>();
+
+        if (string.IsNullOrEmpty(digits))
+        {
+            return res;
+        }
+
+        void dfs(int i, string combination)
+        {
+            if (combination.Length == digits.Length)
+            {
+                res.Add(combination);
+                return;
+            }
+
+            foreach (char c in map[digits[i]])
+            {
+                dfs(i + 1, combination + c);
+            }
+        }
+
+        dfs(0, "");
+        return res;
+    }
 }
