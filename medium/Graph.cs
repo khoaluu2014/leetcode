@@ -221,4 +221,59 @@ public class Graph
         }
         return (fresh == 0) ? ans : -1;
     }
+
+    public List<List<int>> PacificAtlantic(int[][] heights)
+    {
+        int ROWS = heights.Length;
+        int COLS = heights[0].Length;
+
+        HashSet<(int, int)> pac = new HashSet<(int, int)>();
+        HashSet<(int, int)> atl = new HashSet<(int, int)>();
+
+        void dfs(int r, int c, HashSet<(int, int)> visit, int prevHeight)
+        {
+            if (
+                r < 0
+                || c < 0
+                || r >= ROWS
+                || c >= COLS
+                || heights[r][c] < prevHeight
+                || visit.Contains((r, c))
+            )
+            {
+                return;
+            }
+            visit.Add((r, c));
+            dfs(r + 1, c, visit, heights[r][c]);
+            dfs(r - 1, c, visit, heights[r][c]);
+            dfs(r, c + 1, visit, heights[r][c]);
+            dfs(r, c - 1, visit, heights[r][c]);
+        }
+
+        for (int i = 0; i < ROWS; i++)
+        {
+            dfs(i, 0, pac, heights[i][0]);
+            dfs(i, COLS - 1, atl, heights[i][COLS - 1]);
+        }
+
+        for (int i = 0; i < COLS; i++)
+        {
+            dfs(0, i, pac, heights[0][i]);
+            dfs(ROWS - 1, i, atl, heights[ROWS - 1][i]);
+        }
+
+        List<List<int>> res = new List<List<int>>();
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+                if (pac.Contains((i, j)) && atl.Contains((i, j)))
+                {
+                    res.Add(new List<int> { i, j });
+                }
+            }
+        }
+
+        return res;
+    }
 }
