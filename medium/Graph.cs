@@ -276,4 +276,111 @@ public class Graph
 
         return res;
     }
+
+    public void Solve(char[][] board)
+    {
+        int ROWS = board.Length;
+        int COLS = board[0].Length;
+
+        if (ROWS == 0)
+        {
+            return;
+        }
+
+        void dfs(int r, int c)
+        {
+            if (r < 0 || c < 0 || r >= ROWS || c >= COLS || board[r][c] != 'O')
+            {
+                return;
+            }
+            board[r][c] = 'T';
+            dfs(r + 1, c);
+            dfs(r - 1, c);
+            dfs(r, c + 1);
+            dfs(r, c - 1);
+        }
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+                if (board[i][j] == 'O' && (i == 0 || j == 0 || i == ROWS - 1 || j == COLS - 1))
+                {
+                    dfs(i, j);
+                }
+            }
+        }
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+                if (board[i][j] == 'O')
+                {
+                    board[i][j] = 'X';
+                }
+            }
+        }
+        for (int i = 0; i < ROWS; i++)
+        {
+            for (int j = 0; j < COLS; j++)
+            {
+                if (board[i][j] == 'T')
+                {
+                    board[i][j] = 'O';
+                }
+            }
+        }
+    }
+
+    public bool CanFinish(int numCourses, int[][] prerequisites)
+    {
+        List<int>[] preMap = new List<int>[numCourses];
+        for (int i = 0; i < numCourses; i++)
+        {
+            preMap[i] = new List<int>();
+        }
+
+        foreach (int[] prereq in prerequisites)
+        {
+            int crs = prereq[0];
+            int pre = prereq[1];
+            preMap[crs].Add(pre);
+        }
+
+        HashSet<int> visited = new HashSet<int>();
+
+        bool dfs(int crs)
+        {
+            if (visited.Contains(crs))
+            {
+                return false;
+            }
+
+            if (preMap[crs] == null)
+            {
+                return true;
+            }
+
+            visited.Add(crs);
+            foreach (int pre in preMap[crs])
+            {
+                if (!dfs(pre))
+                {
+                    return false;
+                }
+            }
+
+            visited.Remove(crs);
+            preMap[crs] = new List<int>();
+            return true;
+        }
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            if (!dfs(i))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
