@@ -142,7 +142,7 @@ public class Graph
             new int[] { 1, 0 },
             new int[] { -1, 0 },
             new int[] { 0, 1 },
-            new int[] { 0, -1 }
+            new int[] { 0, -1 },
         };
 
         while (q.Count > 0)
@@ -382,5 +382,62 @@ public class Graph
             }
         }
         return true;
+    }
+
+    public int[] FindOrder(int numCourses, int[][] prerequisites)
+    {
+        Dictionary<int, List<int>> preMap = new Dictionary<int, List<int>>();
+
+        foreach (int[] pre in prerequisites)
+        {
+            int course = pre[0];
+            int prereq = pre[1];
+            if (!preMap.ContainsKey(course))
+            {
+                preMap[course] = new List<int>();
+            }
+            preMap[course].Add(prereq);
+        }
+
+        List<int> result = new List<int>();
+        HashSet<int> visited = new HashSet<int>();
+        HashSet<int> cycle = new HashSet<int>();
+
+        bool dfs(int crs)
+        {
+            if (cycle.Contains(crs))
+            {
+                return false;
+            }
+            if (visited.Contains(crs))
+            {
+                return true;
+            }
+
+            cycle.Add(crs);
+            if (preMap.ContainsKey(crs))
+            {
+                foreach (int p in preMap[crs])
+                {
+                    if (!dfs(p))
+                    {
+                        return false;
+                    }
+                }
+            }
+            cycle.Remove(crs);
+            visited.Add(crs);
+            result.Add(crs);
+            return true;
+        }
+
+        for (int i = 0; i < numCourses; i++)
+        {
+            if (!dfs(i))
+            {
+                return new int[0];
+            }
+        }
+        return result.ToArray();
     }
 }
