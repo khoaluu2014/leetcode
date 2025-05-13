@@ -81,4 +81,55 @@ public class Array
         }
         return res;
     }
+
+    public bool IsValidSudoku(char[][] board)
+    {
+        Dictionary<int, HashSet<char>> hashRow = new Dictionary<int, HashSet<char>>();
+        Dictionary<int, HashSet<char>> hashCol = new Dictionary<int, HashSet<char>>();
+        Dictionary<int, HashSet<char>> hashGrid = new Dictionary<int, HashSet<char>>();
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            hashRow[i] = new HashSet<char>();
+            hashCol[i] = new HashSet<char>();
+            hashGrid[i] = new HashSet<char>();
+        }
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board.Length; j++)
+            {
+                if (board[i][j] == '.')
+                {
+                    continue;
+                }
+                if (!hashRow[i].Contains(board[i][j]))
+                {
+                    hashRow[i].Add(board[i][j]);
+                }
+                else
+                {
+                    return false;
+                }
+                if (!hashCol[j].Contains(board[i][j]))
+                {
+                    hashCol[j].Add(board[i][j]);
+                }
+                else
+                {
+                    return false;
+                }
+                int gridIndex = (i / 3) * 3 + (j / 3);
+                if (!hashGrid[gridIndex].Contains(board[i][j]))
+                {
+                    hashGrid[gridIndex].Add(board[i][j]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
