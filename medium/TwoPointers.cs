@@ -97,4 +97,53 @@ public class TwoPointers
 
         return ans;
     }
+
+    public int MaxArea(int[] heights)
+    {
+        int max = 0;
+        int l = 0;
+        int r = heights.Length - 1;
+
+        while (l < r)
+        {
+            int area = (r - l) * Math.Min(heights[l], heights[r]);
+            max = Math.Max(max, area);
+            if (heights[l] < heights[r])
+            {
+                l++;
+            }
+            else if (heights[l] >= heights[r])
+            {
+                r--;
+            }
+        }
+
+        return max;
+    }
+
+    public int Trap(int[] height)
+    {
+        int ans = 0;
+        int l = 0;
+        int r = height.Length - 1;
+        int maxLeft = height[l];
+        int maxRight = height[r];
+        while (l < r)
+        {
+            if (maxLeft < maxRight)
+            {
+                l++;
+                maxLeft = Math.Max(height[l], maxLeft);
+                ans += maxLeft - height[l];
+            }
+            else
+            {
+                r--;
+                maxRight = Math.Max(height[r], maxRight);
+                ans += maxRight - height[r];
+            }
+        }
+
+        return ans;
+    }
 }
