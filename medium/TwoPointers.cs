@@ -52,4 +52,49 @@ public class TwoPointers
 
         return new int[] { -1, -1 };
     }
+
+    public List<List<int>> ThreeSum(int[] nums)
+    {
+        List<List<int>> ans = new List<List<int>>();
+
+        List<int> sorted = new List<int>(nums);
+        sorted.Sort();
+
+        for (int i = 0; i < sorted.Count - 2; i++)
+        {
+            if (i > 0 && sorted[i] == sorted[i - 1])
+            {
+                continue;
+            }
+            int l = i + 1;
+            int r = sorted.Count - 1;
+            while (l < r)
+            {
+                if (sorted[i] == -(sorted[l] + sorted[r]))
+                {
+                    ans.Add(new List<int> { sorted[i], sorted[l], sorted[r] });
+                    l++;
+                    r--;
+                    while (l < r && sorted[l] == sorted[l - 1])
+                    {
+                        l++;
+                    }
+                    while (l < r && sorted[r] == sorted[r + 1])
+                    {
+                        r--;
+                    }
+                }
+                else if (sorted[i] > -(sorted[l] + sorted[r]))
+                {
+                    r--;
+                }
+                else if (sorted[i] < -(sorted[l] + sorted[r]))
+                {
+                    l++;
+                }
+            }
+        }
+
+        return ans;
+    }
 }
