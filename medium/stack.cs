@@ -44,4 +44,92 @@
 
         return stack.Count;
     }
+
+    public int EvalRPN(string[] tokens)
+    {
+        Stack<int> stack = new Stack<int>();
+        foreach (String s in tokens)
+        {
+            if (int.TryParse(s, out int digit))
+            {
+                stack.Push(digit);
+            }
+            else
+            {
+                int b = stack.Pop();
+                int a = stack.Pop();
+                if (s == "+")
+                {
+                    stack.Push(a + b);
+                }
+                else if (s == "-")
+                {
+                    stack.Push(a - b);
+                }
+                else if (s == "*")
+                {
+                    stack.Push(a * b);
+                }
+                else if (s == "/")
+                {
+                    stack.Push(a / b);
+                }
+            }
+        }
+        return stack.Peek();
+    }
+}
+
+public class MinStack
+{
+    Stack<int> minStack;
+    Stack<int> stack;
+
+    public MinStack()
+    {
+        minStack = new Stack<int>();
+        stack = new Stack<int>();
+    }
+
+    public void Push(int val)
+    {
+        if (minStack.Count == 0 || minStack.Peek() >= val)
+        {
+            minStack.Push(val);
+        }
+        stack.Push(val);
+    }
+
+    public void Pop()
+    {
+        int pop = stack.Pop();
+        if (pop == minStack.Peek())
+        {
+            minStack.Pop();
+        }
+    }
+
+    public int Top()
+    {
+        if (stack.Count == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return this.stack.Peek();
+        }
+    }
+
+    public int GetMin()
+    {
+        if (minStack.Count == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return minStack.Peek();
+        }
+    }
 }
