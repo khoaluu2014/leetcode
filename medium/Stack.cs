@@ -2,27 +2,27 @@
 {
     public int[] DailyTemperatures(int[] temperatures)
     {
-        int n = temperatures.Length;
-        int[] result = new int[n];
-        Stack<int[]> stack = new Stack<int[]>();
+        int[] results = new int[temperatures.Length];
+        Stack<int> stack = new Stack<int>();
 
-        for (int i = 0; i < n; i++)
+        for (int i = 0; i < temperatures.Length; i++)
         {
             int temp = temperatures[i];
-            while (stack.Count > 0 && temp > stack.Peek()[0])
+            while (stack.Count > 0 && temp > temperatures[stack.Peek()])
             {
-                int[] pair = stack.Pop();
-                result[pair[1]] = i - pair[1];
+                int prev = stack.Pop();
+                results[prev] = i - prev;
             }
-            stack.Push(new int[] { temp, i });
+            stack.Push(i);
         }
-        return result;
+
+        return results;
     }
 
     public int CarFleet(int target, int[] position, int[] speed)
     {
         int n = position.Length;
-        var pairs = new List<(int position, int speed)>();
+        List<(int position, int speed)> pairs = new List<(int, int)>();
 
         for (int i = 0; i < n; i++)
         {
@@ -77,6 +77,30 @@
             }
         }
         return stack.Peek();
+    }
+
+    public List<string> GenerateParenthesis(int n)
+    {
+        List<string> result = new List<string>();
+        void recursive(string s, int open, int close)
+        {
+            if (s.Length == n * 2)
+            {
+                result.Add(s);
+                return;
+            }
+
+            if (open < n)
+            {
+                recursive(s + "(", open + 1, close);
+            }
+            if (close < open && close < n)
+            {
+                recursive(s + ")", open, close + 1);
+            }
+        }
+        recursive("", 0, 0);
+        return result;
     }
 }
 
