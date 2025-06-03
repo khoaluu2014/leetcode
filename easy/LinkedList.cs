@@ -10,23 +10,23 @@ public class ListNode
     }
 }
 
-public class Solution
+public class LinkedList
 {
     public ListNode ReverseList(ListNode head)
     {
-        ListNode prev = null,
-            cur = head;
-
-        while (cur != null)
+        if (head == null)
         {
-            ListNode temp = cur.next;
-            cur.next = prev;
-            prev = cur;
-            cur = temp;
+            return head;
         }
-        return prev;
+        ListNode newHead = head;
+        if (head.next != null)
+        {
+            newHead = ReverseList(head.next);
+            head.next.next = head;
+        }
+        head.next = null;
+        return newHead;
     }
-
     public ListNode MergeTwoLists(ListNode list1, ListNode list2)
     {
         if (list1 == null)

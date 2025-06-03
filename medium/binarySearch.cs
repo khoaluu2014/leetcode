@@ -1,6 +1,4 @@
-
 public class BinarySearch
-
 {
     public bool SearchMatrix(int[][] matrix, int target)
     {
@@ -195,43 +193,47 @@ public class BinarySearch
 
 public class TimeMap
 {
-    private Dictionary<string, List<Tuple<string, int>>> keyStore;
+    private Dictionary<string, List<Tuple<string, int>>> dict;
 
     public TimeMap()
     {
-        keyStore = new Dictionary<string, List<Tuple<string, int>>>();
+        dict = new Dictionary<string, List<Tuple<string, int>>>();
     }
 
     public void Set(string key, string value, int timestamp)
     {
-        if (!keyStore.ContainsKey(key))
+        if (!dict.ContainsKey(key))
         {
-            keyStore[key] = new List<Tuple<string, int>>();
+            dict.Add(key, new List<Tuple<string, int>>());
         }
-        keyStore[key].Add(Tuple.Create(value, timestamp));
+        dict[key].Add(new Tuple<string, int>(value, timestamp));
     }
 
     public string Get(string key, int timestamp)
     {
-        if (!keyStore.ContainsKey(key))
+        if (!dict.ContainsKey(key))
         {
             return "";
         }
-
-        List<Tuple<string, int>> values = keyStore[key];
+        List<Tuple<string, int>> entries = dict[key];
+        int n = entries.Count;
         int l = 0;
-        int r = values.Count - 1;
+        int r = n - 1;
+
         string result = "";
 
         while (l <= r)
         {
             int mid = l + (r - l) / 2;
-            if (values[mid].Item2 <= timestamp)
+            Tuple<string, int> entry = entries[mid];
+            int stored_timestamp = entry.Item2;
+            string stored_value = entry.Item1;
+            if (stored_timestamp <= timestamp)
             {
-                result = values[mid].Item1;
+                result = stored_value;
                 l = mid + 1;
             }
-            else
+            else if (stored_timestamp > timestamp)
             {
                 r = mid - 1;
             }
