@@ -28,8 +28,8 @@ public class Solution
 {
     public void ReorderList(ListNode head)
     {
-        ListNode fast = head.next,
-            slow = head;
+        ListNode slow = head;
+        ListNode fast = head;
 
         while (fast != null && fast.next != null)
         {
@@ -38,19 +38,19 @@ public class Solution
         }
 
         ListNode second = slow.next;
-        ListNode prev = slow.next = null;
+        ListNode prev = null;
+        slow.next = null;
 
         while (second != null)
         {
-            ListNode temp = second.next;
+            ListNode tmp = second.next;
             second.next = prev;
             prev = second;
-            second = temp;
+            second = tmp;
         }
 
         ListNode first = head;
         second = prev;
-
         while (second != null)
         {
             ListNode tmp1 = first.next;
@@ -66,7 +66,7 @@ public class Solution
     {
         ListNode dummy = new ListNode(0, head);
         ListNode slow = dummy,
-            fast = head;
+                 fast = head;
 
         for (int i = 0; i < n; i++)
         {
@@ -131,7 +131,7 @@ public class Solution
     public bool HasCycle(ListNode head)
     {
         ListNode slow = head,
-            fast = head;
+                 fast = head;
 
         while (fast != null && fast.next != null)
         {
