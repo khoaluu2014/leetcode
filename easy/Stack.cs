@@ -1,26 +1,34 @@
 ﻿// See https://aka.ms/new-console-template for more information
-public class BinarySearch
+public class Stack
 {
-    public int Search(int[] nums, int target)
+    public bool IsValid(string s)
     {
-        int l = 0;
-        int r = nums.Length - 1;
-        while (l <= r)
+        Stack<char> stack = new Stack<char>();
+        Dictionary<char, char> dict = new Dictionary<char, char>();
+
+        dict.Add('}', '{');
+        dict.Add(']', '[');
+        dict.Add(')', '(');
+
+        foreach (char c in s.ToCharArray())
         {
-            int mid = l + (r - l) / 2; // this is preventing potential overflow
-            if (nums[mid] == target)
+            if (dict.ContainsKey(c))
             {
-                return mid;
+                if (stack.Count != 0 && stack.Peek() == dict[c])
+                {
+                    stack.Pop();
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else if (nums[mid] < target)
+            else
             {
-                l = mid + 1;
-            }
-            else if (nums[mid] > target)
-            {
-                r = mid - 1;
+                stack.Push(c);
             }
         }
-        return -1;
+
+        return stack.Count == 0;
     }
 }
