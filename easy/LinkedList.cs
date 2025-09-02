@@ -49,6 +49,7 @@ public class LinkedList
             return list2;
         }
     }
+
     public bool HasCycle(ListNode head)
     {
         ListNode slow = head;

@@ -103,23 +103,20 @@ namespace leetcode
 
         public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
         {
-            ListNode ans = new ListNode();
+            ListNode ans = new();
             ListNode cur = ans;
-
             int carry = 0;
             while (l1 != null || l2 != null || carry != 0)
             {
-                int v1 = (l1 != null) ? l1.val : 0;
-                int v2 = (l2 != null) ? l2.val : 0;
-                int val = v1 + v2 + carry;
+                int l1Val = l1 == null ? 0 : l1.val;
+                int l2Val = l2 == null ? 0 : l2.val;
+                int val = l1Val + l2Val + carry;
                 carry = val / 10;
-                val = val % 10;
-                cur.next = new ListNode(val);
+                cur.next = new(val % 10);
                 cur = cur.next;
-                l1 = (l1 != null) ? l1.next : null;
-                l2 = (l2 != null) ? l2.next : null;
+                l1 = l1 == null ? null : l1.next;
+                l2 = l2 == null ? null : l2.next;
             }
-
             return ans.next;
         }
 
@@ -140,9 +137,8 @@ namespace leetcode
 
         public int FindDuplicate(int[] nums)
         {
-            int slow = 0,
-                fast = 0;
-
+            int slow = 0;
+            int fast = 0;
             while (true)
             {
                 slow = nums[slow];
@@ -152,18 +148,16 @@ namespace leetcode
                     break;
                 }
             }
-
             int slow2 = 0;
             while (true)
             {
-                slow2 = nums[slow2];
                 slow = nums[slow];
+                slow2 = nums[slow2];
                 if (slow == slow2)
                 {
                     break;
                 }
             }
-
             return slow;
         }
 
@@ -217,43 +211,35 @@ namespace leetcode
         }
     }
 
-    public class Node1
+    public class Node1(int key, int val)
     {
-        public int Key { get; set; }
-        public int Val { get; set; }
+        public int Key { get; set; } = key;
+        public int Val { get; set; } = val;
         public Node1? Prev { get; set; }
         public Node1? Next { get; set; }
-
-        public Node1(int key, int val)
-        {
-            Key = key;
-            Val = val;
-            Prev = null;
-            Next = null;
-        }
     }
 
-    public class LRUCache
+    public class LRUCache()
     {
-        private int cap;
+        private readonly int capacity;
         private Dictionary<int, Node1> cache;
-        private Node1? left;
-        private Node1? right;
+        private readonly Node1 left;
+        private readonly Node1 right;
 
-        public LRUCache(int capacity)
+        public LRUCache(int cap)
         {
-            cap = capacity;
-            cache = new Dictionary<int, Node1>();
-            left = new Node1(0, 0);
-            right = new Node1(0, 0);
+            capacity = cap;
+            cache = new();
+            left = new(0, 0);
+            right = new(0, 0);
             left.Next = right;
             right.Prev = left;
         }
 
-        private void Remove(Node1 node)
+        private static void Remove(Node1 node)
         {
-            Node1 prev = node.Prev!;
-            Node1 next = node.Next!;
+            Node1 prev = node.Prev;
+            Node1 next = node.Next;
             prev.Next = next;
             next.Prev = prev;
         }
@@ -269,32 +255,32 @@ namespace leetcode
 
         public int Get(int key)
         {
-            if (cache.ContainsKey(key))
+            if (cache.TryGetValue(key, out Node1 node))
             {
-                Node1 node = cache[key];
                 Remove(node);
                 Insert(node);
                 return node.Val;
             }
-            return -1;
+            else
+                return -1;
         }
 
         public void Put(int key, int value)
         {
-            if (cache.ContainsKey(key))
+            if (cache.TryGetValue(key, out Node1 node))
             {
-                Remove(cache[key]);
+                Remove(node);
             }
 
-            Node1 node = new Node1(key, value);
-            cache[key] = node;
-            Insert(node);
+            Node1 newNode = new();
+            cache[key] = newNode;
+            Insert(newNode);
 
-            if (cache.Count > cap)
+            if (cache.Count > capacity)
             {
-                Node1 lru = left.Next;
-                Remove(lru);
-                cache.Remove(lru.Key);
+                Node1 least = left.Next;
+                Remove(least);
+                cache.Remove(key);
             }
         }
     }
