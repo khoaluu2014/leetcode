@@ -1,4 +1,4 @@
-namespace leetcode
+namespace leetcode.medium
 {
     public class ListNode
     {
